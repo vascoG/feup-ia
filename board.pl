@@ -6,29 +6,7 @@
 */
 
 %initial_state(-GameState)
-initial_state(gamestate(Board,1,0,0)):- initial_board( Board).
-
-%initial_board( -Board)
-initial_board(Board):- 
-    create_board(6,6,Board).
-
-%create_board(+SizeLine,+SizeColumn, -Board)
-create_board(_,0,[]).
-
-create_board(Size,Column,[Line|Board]):-
-    Column > 0,
-    Column1 is Column-1,
-    create_line(Size,Line),
-    create_board(Size,Column1,Board).
-
-%create_line(+Size, -Line)
-create_line(1,[0]).
-
-create_line(Size, Line):- 
-    Size > 1,
-    Size1 is Size-1,
-    create_line(Size1,Line1),
-    append(Line1,[0],Line).
+initial_state(gamestate([[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],1,0,0)).
 
 %board(+Board,+I-J,?Player)
 board(Board,I-J,Player):-
