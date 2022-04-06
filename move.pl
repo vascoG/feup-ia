@@ -16,10 +16,6 @@ move(gamestate(Board,Turn,P1,P2), MoveI-MoveJ, gamestate(NewBoard,NewTurn, NewP1
     NewTurn is Turn +1,
     move_adjacents(NB, Player, MoveI-MoveJ, P1, P2, NewBoard, NewP1, NewP2).
 
-
-
-
-
 %move_adjacents
 move_adjacents(Board, 1, I-J, P1, P2, NewBoard, NewP1, NewP2):-
     I1 is I-1,
@@ -99,14 +95,27 @@ repel(Board,_,_,Board,0,0).
 %ter um default case no fim para o caso de nao entrar em funçoes anteriores de repel em que nao muda a board
 
 
+%valid_moves(+GameState, -ListOfMoves)
+valid_moves(GameState,ListOfMoves):-
+    findall(Move, move(GameState, Move ,_), ListOfMoves1),
+    sort(ListOfMoves1,ListOfMoves).
+
+%select_move(+GameState, +Player, -I-J)
+select_move(_,h+_, I-J):-
+    format('~nRow: ',[]), read_digit_between_one_time(-1,6,I),
+    format('~nColumn: ',[]), read_digit_between_one_time(-1,6,J).
+
+select_move(GameState,c+Level, Move):-
+    choose_move(GameState,Level,Move),
+    current_player(GameState, Player),
+    format('~nComputer (Player ~d) has chosen to play in: ~w', [Player,Move]),
+    press_enter_to_continue.
 
 
-
-
-%[[0,0,0,0,0,0],[0,0,0,0,1,0],[0,0,0,2,2,0],[0,0,0,1,0,1],[0,0,0,0,0,0],[0,0,0,0,0,0]]
-
-
-
+%current_player(+GameState, -Player)
+current_player(gamestate(_,Turn,_),Player):-
+    Turn1 is (Turn rem 2), 
+    player_turn(Turn1, Player).
 
 %player_turn(+Turn, -Player)
 player_turn(0, 2).
