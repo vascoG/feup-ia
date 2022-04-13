@@ -7,8 +7,7 @@
 
 %move(+GameState, +Move, -NewGameState)
 move(gamestate(Board,Turn,P1,P2), MoveI-MoveJ, gamestate(NewBoard,NewTurn, NewP1,NewP2)):-
-    P is (Turn rem 2),
-    player_turn(P, Player),
+    current_player(gamestate(Board,Turn,P1,P2),Player),
     between(0,5, MoveI), %5 ou 6?
     between(0,5, MoveJ),
     board(Board, MoveI-MoveJ, 0),  %Verificar se a célula está vazia.
@@ -50,19 +49,7 @@ move_adjacents(Board, 2, I-J, P1, P2, NewBoard, NewP1, NewP2):-
     NewP2 is P2+P21+P22+P23+P24+P25+P26+P27+P28+1.
 
 
-repel(Board, I-J, MoveI-MoveJ, NewBoard,0,0):-
-    I>0, 
-    J>0,
-    I<5,
-    J<5,
-    DiffI is I-MoveI,
-    DiffJ is J-MoveJ,
-    NewI is DiffI+I,
-    NewJ is DiffJ+J,
-    board(Board, NewI-NewJ, 0),
-    board(Board,I-J,Player),
-    update_board(Board,NewI,NewJ,Player,NB),
-    update_board(NB, I,J,0,NewBoard),!.
+
 
 repel(Board, 0-J, 1-_, NewBoard, -1,0):-
     board(Board,0-J,1),
@@ -89,6 +76,21 @@ repel(Board, I-5, _-4, NewBoard, 0,-1):-
     board(Board,I-5,2),
     update_board(Board, I,5, 0, NewBoard),!.
 
+repel(Board, I-J, MoveI-MoveJ, NewBoard,0,0):-
+    I>=0, 
+    J>=0,
+    I=<5,
+    J=<5,
+    DiffI is I-MoveI,
+    DiffJ is J-MoveJ,
+    NewI is DiffI+I,
+    NewJ is DiffJ+J,
+    board(Board, NewI-NewJ, 0),
+    board(Board,I-J,Player),
+    update_board(Board,NewI,NewJ,Player,NB),
+    update_board(NB, I,J,0,NewBoard),!.
+
+
 repel(Board,_,_,Board,0,0).
 
 
@@ -113,9 +115,13 @@ select_move(GameState,c+Level, Move):-
 
 
 %current_player(+GameState, -Player)
-current_player(gamestate(_,Turn,_),Player):-
+current_player(gamestate(_,Turn,_,_),Player):-
     Turn1 is (Turn rem 2), 
     player_turn(Turn1, Player).
+
+%opponent(+Player,-Opponent)
+opponent(1,2).
+opponent(2,1).
 
 %player_turn(+Turn, -Player)
 player_turn(0, 2).
