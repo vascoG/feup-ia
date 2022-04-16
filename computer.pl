@@ -16,16 +16,16 @@ choose_move(GameState, 2, Move):-
 alpha_beta_player(1,1).
 alpha_beta_player(2,-1).
 
-gameover(GameState):-
+game_over(GameState,1):-
     consecutive_cubes(GameState, 1, 3).
 
 
-gameover(GameState):-
+game_over(GameState,2):-
     consecutive_cubes(GameState, 2, 3).
 
 
 alpha_beta(Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   gameover(Position),!,
+   game_over(Position,_),!,
    value(Position,V),
     Value is V*Player.
 

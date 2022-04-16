@@ -1,5 +1,6 @@
 :- ensure_loaded(move).
 :- ensure_loaded(interface).
+:- ensure_loaded(computer).
 
 %play
 play:- 
@@ -65,7 +66,7 @@ play_human_computer(1,Level):-
 
 %play_game(+Players)
 play_game(P1+L1-P2+L2):-
-    initial_state(Size, GameState),
+    initial_state(GameState),
     display_game(GameState),
     play_loop(GameState, P1+L1-P2+L2).
 
