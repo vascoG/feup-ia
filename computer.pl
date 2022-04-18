@@ -10,6 +10,12 @@ choose_move(GameState, 1, Move):-
 choose_move(GameState, 2, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
+    alpha_beta(P,2, GameState, -200, 200, Move, _Value).    
+
+
+choose_move(GameState, 3, Move):-
+    current_player(GameState,Player),
+    alpha_beta_player(Player,P),
     alpha_beta(P,3, GameState, -200, 200, Move, _Value).    
 
 
@@ -19,6 +25,9 @@ alpha_beta_player(2,-1).
 game_over(GameState,1):-
     consecutive_cubes(GameState, 1, 3).
 
+game_over(gamestate(_,_,8,_),1).
+
+game_over(gamestate(_,_,_,8),2).
 
 game_over(GameState,2):-
     consecutive_cubes(GameState, 2, 3).
@@ -36,7 +45,7 @@ alpha_beta(Player,0,Position,_Alpha,_Beta,_NoMove,Value) :-
 alpha_beta(Player,D,Position,Alpha,Beta,Move,Value) :- 
     D > 0,
     D1 is D-1,
-    findall(M,move(Position,M,NewPosition),Moves), 
+    findall(M,move(Position,M,_NewPosition),Moves), 
     alpha_beta(Player, Moves, Position, D1, Alpha, Beta, nil, Value, Move).
 
 alpha_beta(_, [], _, _, Alpha, _, BestMove, Alpha, BestMove).
@@ -46,7 +55,7 @@ alpha_beta(Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestMove, Best
     Opponent is -Player,
     OppAlpha is -Beta,
     OppBeta is -Alpha,
-    alpha_beta(Opponent, D, Position1, OppAlpha, OppBeta, OppMove, OppValue),
+    alpha_beta(Opponent, D, Position1, OppAlpha, OppBeta, _OppMove, OppValue),
     Value is -OppValue,
     (
         Value >= Beta -> BestValue = Value, BestMove = Move;
@@ -124,10 +133,20 @@ cutoff( Player,Move, Value, D, Alpha, Beta, Moves, Position, Movel, BestMove ) :
 value(Gamestate, 100):-
     consecutive_cubes(Gamestate, 1, 3),!.
 
+value(gamestate(_,_,8,_),100).
+
 value(Gamestate, -100):-
     consecutive_cubes(Gamestate, 2, 3),!.
 
-value(_,0).
+value(gamestate(_,_,_,8),-100).
+
+value(gamestate(Board,_,P1,P2), Value):-
+    findall(1,consecutive_cubes(gamestate(Board,_,P1,P2),1,2),L1),
+    findall(2,consecutive_cubes(gamestate(Board,_,P1,P2),2,2),L2),
+    length(L1,C1),
+    length(L2,C2),
+    Value is 20*(C1-C2)+5*(P1-P2).
+
 
 
 %consecutive_cubes(+GameState, +Player, +N)

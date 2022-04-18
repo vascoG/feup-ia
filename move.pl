@@ -109,9 +109,10 @@ select_move(_,h+_, I-J):-
 
 select_move(GameState,c+Level, Move):-
     choose_move(GameState,Level,Move),
-    current_player(GameState, Player),
+    current_player(GameState, Player).
+    /*,
     format('~nComputer (Player ~d) has chosen to play in: ~w', [Player,Move]),
-    press_enter_to_continue.
+    press_enter_to_continue.*/
 
 
 %current_player(+GameState, -Player)
