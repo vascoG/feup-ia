@@ -1,9 +1,18 @@
-20 * (C1-C2) + 5 * (P1-P2) [Depth 3] (50 - 0) Aleatório   (1 - 49)
-20 * (C1-C2) + 5 * (P1-P2) [Depth 2] (50 - 0) Aleatório   (0 - 50)
+20 * (C1-C2) + 5 * (P1-P2) [Depth 3] (50 - 0) Aleatório   (0 - 50)
+20 * (C1-C2) + 5 * (P1-P2) [Depth 2] (50 - 0) Aleatório   (1 - 49)
 
 20 * (C1-C2) + 5 * (P1-P2) [Depth 2] (0 - 50) 20 * (C1-C2) + 5 * (P1-P2) [Depth 3] (50 - 0)
 
 
-C1-C2 D3
+20 * (C1-C2) [Depth 3] (0-50) 20 * (C1-C2) + 5 * (P1-P2) [Depth 2/3] (50-0)
 
-P1-P2 D3
+5 * (P1-P2) [Depth 3] (0-50) 20 * (C1-C2) + 5 * (P1-P2) [Depth 2/3] (50-0)
+
+20 * (C1-C2) [Depth 3] (0-50) 5 * (P1-P2) [Depth 3] (50-0)
+
+
+1: Aleatório
+2: 20 * (C1-C2) [Depth 3]
+3: 5 * (P1-P2) [Depth 3] 
+4: 20 * (C1-C2) + 5 * (P1-P2) [Depth 2]
+5: 20 * (C1-C2) + 5 * (P1-P2) [Depth 3]

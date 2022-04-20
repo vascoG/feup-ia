@@ -8,6 +8,7 @@ play:-
 
 test(Level1,Level2):-
     play_tests(0,0-0, Level1,Level2,Score),
+    format('~nScore: ', []),
     write(Score).
 
 %play_tests
@@ -33,7 +34,7 @@ play_loop_tests(GameState,_, Winner):-
     game_over(GameState, Winner), !.
 
 play_loop_tests(GameState, P1+L1-P2+L2, Winner):-
-    select_move(GameState,P1+L1, I-J),
+    choose_move(GameState,L1,I-J),
     move(GameState, I-J, NewGameState),
     play_loop_tests(NewGameState, P2+L2-P1+L1, Winner).
 
@@ -77,14 +78,14 @@ play_options(2):-
     format('~n1 - Computer',[]),
     format('~nOption: ', []), read_digit_between(-1,2,Option),
     format('~nChoose the level of the computer',[]),
-    format('~nLevel (1 or 2): ', []),read_digit_between(0,3,Level),
+    format('~nLevel (1-5): ', []),read_digit_between(0,6,Level),
     play_human_computer(Option,Level).
 
 play_options(3):-
     format('Choose the level of Computer 1: ',[]),
-    format('~nLevel (1 or 2): ', []), read_digit_between(0,3,Level1),
+    format('~nLevel (1-5): ', []), read_digit_between(0,6,Level1),
     format('Choose the level of Computer 2: ',[]),
-    format('~nLevel (1 or 2): ', []), read_digit_between(0,3,Level2),
+    format('~nLevel (1-5): ', []), read_digit_between(0,6,Level2),
     play_game(c+Level1-c+Level2).
 
 

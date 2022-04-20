@@ -1,18 +1,5 @@
-# IA
+  In order to play the game, you need to use a Prolog system. We recommend SICStus Prolog (v4.7) because it's the environment in which it was developed.
 
-## Game state's representation
-
-### Board
-
-6x6 Matrix, 0 represents an empty space, 1 represents Player1's pieces and 2 represents Player2's pieces.
-
-### Game State
-
-gamestate(Board, Turn, P1Pieces, P2Pieces)
-
-Turn is 1,2,3,4,5...
-P1/P2Pieces is the total number of pieces that each Player has on board
-
-### Winner conditions
-
-The first Player to either line up 3 pieces in a row or have all eight pieces on the board wins the game.
+  In that system, you can load game.pl in 'File -> Consult -> game.pl'.
+  
+  Then, you can either play it using the predicate 'play.' where you can select the Option (Human x Human, Human x Computer or watch a Computer x Computer game) and the Computer level if present. You can also test the levels of the Computer using the predicate 'test(+L1,+L2).', where the Computer with L1 will play 50 games with the Computer with L2 (L1 and L2 need to be chosen by the user).

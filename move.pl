@@ -104,15 +104,15 @@ valid_moves(GameState,ListOfMoves):-
 
 %select_move(+GameState, +Player, -I-J)
 select_move(_,h+_, I-J):-
-    format('~nRow: ',[]), read_digit_between_one_time(-1,6,I),
-    format('~nColumn: ',[]), read_digit_between_one_time(-1,6,J).
+    repeat,
+    format('~nColumn: ',[]), read_digit_between_one_time(-1,6,I),
+    format('~nRow: ',[]), read_digit_between_one_time(-1,6,J).
 
 select_move(GameState,c+Level, Move):-
     choose_move(GameState,Level,Move),
-    current_player(GameState, Player).
-    /*,
+    current_player(GameState, Player),
     format('~nComputer (Player ~d) has chosen to play in: ~w', [Player,Move]),
-    press_enter_to_continue.*/
+    press_enter_to_continue.
 
 
 %current_player(+GameState, -Player)

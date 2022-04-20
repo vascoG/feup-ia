@@ -10,13 +10,23 @@ choose_move(GameState, 1, Move):-
 choose_move(GameState, 2, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
-    alpha_beta(P,2, GameState, -200, 200, Move, _Value).    
+    alpha_beta(1,P,3, GameState, -300, 300, Move, _Value).    
 
 
 choose_move(GameState, 3, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
-    alpha_beta(P,3, GameState, -200, 200, Move, _Value).    
+    alpha_beta(2,P,3, GameState, -300, 300, Move, _Value). 
+
+choose_move(GameState, 4, Move):-
+    current_player(GameState,Player),
+    alpha_beta_player(Player,P),
+    alpha_beta(0,P,2, GameState, -300, 300, Move, _Value).     
+
+choose_move(GameState, 5, Move):-
+    current_player(GameState,Player),
+    alpha_beta_player(Player,P),
+    alpha_beta(0,P,3, GameState, -300, 300, Move, _Value).  
 
 
 alpha_beta_player(1,1).
@@ -33,112 +43,63 @@ game_over(GameState,2):-
     consecutive_cubes(GameState, 2, 3).
 
 
-alpha_beta(Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   game_over(Position,_),!,
-   value(Position,V),
+alpha_beta(0,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
+    game_over(Position,_),!,
+    value(Position,V),
     Value is V*Player.
 
-alpha_beta(Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
+alpha_beta(0,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
    value(Position,V),
    Value is V*Player.
 
-alpha_beta(Player,D,Position,Alpha,Beta,Move,Value) :- 
+alpha_beta(1,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
+    game_over(Position,_),!,
+    value1(Position,V),
+    Value is V*Player.
+
+alpha_beta(1,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
+   value1(Position,V),
+   Value is V*Player.
+
+alpha_beta(2,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
+    game_over(Position,_),!,
+    value2(Position,V),
+    Value is V*Player.
+
+alpha_beta(2,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
+   value2(Position,V),
+   Value is V*Player.
+
+alpha_beta(ValueFun,Player,D,Position,Alpha,Beta,Move,Value) :- 
     D > 0,
     D1 is D-1,
     findall(M,move(Position,M,_NewPosition),Moves), 
-    alpha_beta(Player, Moves, Position, D1, Alpha, Beta, nil, Value, Move).
+    alpha_beta(ValueFun,Player, Moves, Position, D1, Alpha, Beta, nil, Value, Move).
 
-alpha_beta(_, [], _, _, Alpha, _, BestMove, Alpha, BestMove).
+alpha_beta(_,_, [], _, _, Alpha, _, BestMove, Alpha, BestMove).
 
-alpha_beta(Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove):-
+alpha_beta(ValueFun,Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove):-
     move(Position, Move, Position1),
     Opponent is -Player,
     OppAlpha is -Beta,
     OppBeta is -Alpha,
-    alpha_beta(Opponent, D, Position1, OppAlpha, OppBeta, _OppMove, OppValue),
+    alpha_beta(ValueFun,Opponent, D, Position1, OppAlpha, OppBeta, _OppMove, OppValue),
     Value is -OppValue,
     (
         Value >= Beta -> BestValue = Value, BestMove = Move;
-        Value > Alpha -> alpha_beta(Player, Moves, Position, D, Value, Beta, Move, BestValue, BestMove);
-        alpha_beta(Player, Moves, Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove)
+        Value > Alpha -> alpha_beta(ValueFun,Player, Moves, Position, D, Value, Beta, Move, BestValue, BestMove);
+        alpha_beta(ValueFun,Player, Moves, Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove)
     ).
 
-
-
-
-/*
-alpha_beta(Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   value(Position,Player,Value).
-
-alpha_beta(Player,D,Position,Alpha,Beta,Move,Value) :- 
-   D > 0, 
-   findall(M,move(Position,M,NewPosition),Moves), 
-   Alpha1 is -Beta, 
-   Beta1 is -Alpha,
-   D1 is D-1, 
-   evaluate_and_choose(Player,Moves,Position,D1,Alpha1,Beta1,nil,(Move,Value)).
-
-evaluate_and_choose(Player,[Move|Moves],Position,D,Alpha,Beta,Record,BestMove) :-
-   move(Position,Move,Position1), 
-   opponent(Player,OtherPlayer),
-   alpha_beta(OtherPlayer,D,Position1,Alpha,Beta,_OtherMove,Value),
-   Value1 is -Value,
-   cutoff(Player,Move,Value1,D,Alpha,Beta,Moves,Position,Record,BestMove).
-evaluate_and_choose(_Player,[],_Position,_D,Alpha,_Beta,Move,(Move,Alpha)).
-
-cutoff(_Player,Move,Value,_D,_Alpha,Beta,_Moves,_Position,_Record,(Move,Value)) :- 
-   Value >= Beta.
-cutoff(Player,Move,Value,D,Alpha,Beta,Moves,Position,_Record,BestMove) :- 
-   Alpha < Value, Value < Beta,  
-   evaluate_and_choose(Player,Moves,Position,D,Value,Beta,Move,BestMove).
-cutoff(Player,_Move,Value,D,Alpha,Beta,Moves,Position,Record,BestMove) :- 
-   Value =< Alpha, 
-   evaluate_and_choose(Player,Moves,Position,D,Alpha,Beta,Record,BestMove).
-
-*/
-
-/*
-evaluate_and_choose(Player,[ Move | Moves ], Position, D, Alpha, Beta, Move1, BestMove ) :-
-    move( Position, Move, Positionl ),
-    opponent(Player, Player1),
-    alpha_beta( Player1,D, Positionl, Alpha, Beta, _MoveX, Value ),
-    Value1 is -Value,
-    cutoff(Player, Move, Value1, D, Alpha, Beta, Moves, Position, Move1, BestMove ).
-
-evaluate_and_choose(_Player, [], _Position, _D, Alpha, _Beta, Move, ( Move, Alpha )).
-
-alpha_beta(Player, 0, Position, Alpha, _Beta, _Move, Value ) :- 
-    value( Position, Player,Value ).
-    
-alpha_beta(Player, D, Position, Alpha, Beta, Move, Value ) :- 
-    D > 0,
-    findall( M, move( Position, M,_ ), Moves ),
-    Alphal is -Beta,
-    Betal is -Alpha,
-    D1 is D-1,
-    evaluate_and_choose(Player, Moves, Position, D1, Alphal, Betal, nil, ( Move, Value )).
-
-    
-cutoff( _Player,Move, Value, D, Alpha, Beta, Moves, Position, Movel, ( Move,Value )) :- 
-    Value >= Beta, !.
-cutoff(Player,Move, Value, D, Alpha, Beta, Moves, Position, Movel, BestMove ) :- 
-    Alpha < Value, Value < Beta, !,
-    evaluate_and_choose(Player, Moves, Position, D, Value, Beta, Move, BestMove ).
-
-cutoff( Player,Move, Value, D, Alpha, Beta, Moves, Position, Movel, BestMove ) :- 
-    Value =< Alpha, !,
-    evaluate_and_choose(Player, Moves, Position, D, Alpha, Beta, Move1, BestMove ).
-
-*/
-value(Gamestate, 100):-
+value(Gamestate, 200):-
     consecutive_cubes(Gamestate, 1, 3),!.
 
-value(gamestate(_,_,8,_),100).
+value(gamestate(_,_,8,_),200).
 
-value(Gamestate, -100):-
+value(Gamestate, -200):-
     consecutive_cubes(Gamestate, 2, 3),!.
 
-value(gamestate(_,_,_,8),-100).
+value(gamestate(_,_,_,8),-200).
 
 value(gamestate(Board,_,P1,P2), Value):-
     findall(1,consecutive_cubes(gamestate(Board,_,P1,P2),1,2),L1),
@@ -147,6 +108,35 @@ value(gamestate(Board,_,P1,P2), Value):-
     length(L2,C2),
     Value is 20*(C1-C2)+5*(P1-P2).
 
+value1(Gamestate, 200):-
+    consecutive_cubes(Gamestate,1,3),!.
+
+value1(gamestate(_,_,8,_),200).
+
+value1(Gamestate, -200):-
+    consecutive_cubes(Gamestate,2,3),!.
+
+value1(gamestate(_,_,_,8),-200).
+
+value1(gamestate(Board,_,P1,P2),Value):-
+    findall(1,consecutive_cubes(gamestate(Board,_,P1,P2),1,2),L1),
+    findall(2,consecutive_cubes(gamestate(Board,_,P1,P2),2,2),L2),
+    length(L1,C1),
+    length(L2,C2),
+    Value is 20*(C1-C2).  
+
+value2(Gamestate, 200):-
+    consecutive_cubes(Gamestate,1,3),!.
+
+value2(gamestate(_,_,8,_),200).
+
+value2(Gamestate, -200):-
+    consecutive_cubes(Gamestate,2,3),!.
+
+value2(gamestate(_,_,_,8),-200).
+
+value2(gamestate(_,_,P1,P2),Value):-
+    Value is 5*(P1-P2).
 
 
 %consecutive_cubes(+GameState, +Player, +N)

@@ -4,7 +4,7 @@
 display_game(gamestate([Line|Board],Turn,P1,P2)):-
     format('~n------------------------------------------------~n',[]),
     format('~nTurn: ~d', Turn),
-    format('~nP1: ~w~n~n', P1),
+    format('~nP1: ~w', P1),
     format('~nP2: ~w~n~n', P2),
     format('   ',[]),
     print_top_coords(Line,0),
