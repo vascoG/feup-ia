@@ -13,9 +13,9 @@ test(Level1,Level2):-
 
 %play_tests
 play_tests(Game,I-J,L1-L2,Level1,Level2, Score):-
+    Game < 36,
     write(I-J),
     write(' : '),
-    Game < 36,
     initial_state(GameState),
     move(GameState,I-J, NewGameState),
     play_loop_tests(NewGameState,c+Level2-c+Level1, Winner),
@@ -26,7 +26,7 @@ play_tests(Game,I-J,L1-L2,Level1,Level2, Score):-
     next_move(I-J,II-JJ),
     play_tests(Game1,II-JJ,LL1-LL2, Level1,Level2,Score).
 
-play_tests(50,_,L1-L2, _,_,L1-L2).
+play_tests(36,_,L1-L2, _,_,L1-L2).
 
 next_move(I-J,II-J):-
     I < 5, !,
