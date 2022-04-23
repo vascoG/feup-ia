@@ -7,21 +7,33 @@ play:-
     menu.
 
 test(Level1,Level2):-
-    play_tests(0,0-0, Level1,Level2,Score),
+    play_tests(0,0-0,0-0, Level1,Level2,Score),
     format('~nScore: ', []),
     write(Score).
 
 %play_tests
-play_tests(Game,L1-L2,Level1,Level2, Score):-
-    Game < 50,
+play_tests(Game,I-J,L1-L2,Level1,Level2, Score):-
+    write(I-J),
+    write(' : '),
+    Game < 36,
     initial_state(GameState),
-    play_loop_tests(GameState,c+Level1-c+Level2, Winner),
+    move(GameState,I-J, NewGameState),
+    play_loop_tests(NewGameState,c+Level2-c+Level1, Winner),
     write(Winner),
+    format('~n', []),
     update_score(L1-L2,Winner,LL1-LL2),
     Game1 is Game+1,
-    play_tests(Game1,LL1-LL2, Level1,Level2,Score).
+    next_move(I-J,II-JJ),
+    play_tests(Game1,II-JJ,LL1-LL2, Level1,Level2,Score).
 
-play_tests(50,L1-L2, _,_,L1-L2).
+play_tests(50,_,L1-L2, _,_,L1-L2).
+
+next_move(I-J,II-J):-
+    I < 5, !,
+    II is I+1.
+
+next_move(5-J,0-JJ):-
+    JJ is J+1,!.
 
 update_score(L1-L2,1,LL1-L2):-
     LL1 is L1+1.
@@ -29,9 +41,13 @@ update_score(L1-L2,1,LL1-L2):-
 update_score(L1-L2,2,L1-LL2):-
     LL2 is L2+1.
 
+update_score(L1-L2,0,L1-L2).
+
 %play_loop_tests(+GameState, +Players, -Winner)
 play_loop_tests(GameState,_, Winner):-
     game_over(GameState, Winner), !.
+
+play_loop_tests(gamestate(_,100,_,_),_, 0).
 
 play_loop_tests(GameState, P1+L1-P2+L2, Winner):-
     choose_move(GameState,L1,I-J),

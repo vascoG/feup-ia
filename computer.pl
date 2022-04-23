@@ -6,6 +6,9 @@ choose_move(GameState, 1, Move):-
     valid_moves(GameState, Moves),
     random_select(Move, Moves, _).
 
+choose_move(gamestate(Board,1,P1,P2),_,Move):-
+    valid_moves(gamestate(Board,1,P1,P2), Moves),
+    random_select(Move, Moves, _).
 
 choose_move(GameState, 2, Move):-
     current_player(GameState,Player),
@@ -28,6 +31,11 @@ choose_move(GameState, 5, Move):-
     alpha_beta_player(Player,P),
     alpha_beta(0,P,3, GameState, -300, 300, Move, _Value).  
 
+choose_move(GameState, 6, Move):-
+    current_player(GameState,Player),
+    alpha_beta_player(Player,P),
+    alpha_beta(3,P,3, GameState, -300, 300, Move, _Value).  
+
 
 alpha_beta_player(1,1).
 alpha_beta_player(2,-1).
@@ -43,31 +51,13 @@ game_over(GameState,2):-
     consecutive_cubes(GameState, 2, 3).
 
 
-alpha_beta(0,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
+alpha_beta(Level,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
     game_over(Position,_),!,
-    value(Position,V),
+    value(Level,Position,V),
     Value is V*Player.
 
-alpha_beta(0,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   value(Position,V),
-   Value is V*Player.
-
-alpha_beta(1,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
-    game_over(Position,_),!,
-    value1(Position,V),
-    Value is V*Player.
-
-alpha_beta(1,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   value1(Position,V),
-   Value is V*Player.
-
-alpha_beta(2,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
-    game_over(Position,_),!,
-    value2(Position,V),
-    Value is V*Player.
-
-alpha_beta(2,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   value2(Position,V),
+alpha_beta(Level,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
+   value(Level,Position,V),
    Value is V*Player.
 
 alpha_beta(ValueFun,Player,D,Position,Alpha,Beta,Move,Value) :- 
@@ -91,52 +81,40 @@ alpha_beta(ValueFun,Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestM
         alpha_beta(ValueFun,Player, Moves, Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove)
     ).
 
-value(Gamestate, 200):-
+value(_,Gamestate, 200):-
     consecutive_cubes(Gamestate, 1, 3),!.
 
-value(gamestate(_,_,8,_),200).
+value(_,gamestate(_,_,8,_),200).
 
-value(Gamestate, -200):-
+value(_,Gamestate, -200):-
     consecutive_cubes(Gamestate, 2, 3),!.
 
-value(gamestate(_,_,_,8),-200).
+value(_,gamestate(_,_,_,8),-200).
 
-value(gamestate(Board,_,P1,P2), Value):-
+value(0,gamestate(Board,_,P1,P2), Value):-
     findall(1,consecutive_cubes(gamestate(Board,_,P1,P2),1,2),L1),
     findall(2,consecutive_cubes(gamestate(Board,_,P1,P2),2,2),L2),
     length(L1,C1),
     length(L2,C2),
-    Value is 20*(C1-C2)+5*(P1-P2).
+    Value is 4*(C1-C2)+(P1-P2).
 
-value1(Gamestate, 200):-
-    consecutive_cubes(Gamestate,1,3),!.
-
-value1(gamestate(_,_,8,_),200).
-
-value1(Gamestate, -200):-
-    consecutive_cubes(Gamestate,2,3),!.
-
-value1(gamestate(_,_,_,8),-200).
-
-value1(gamestate(Board,_,P1,P2),Value):-
+value(1,gamestate(Board,_,P1,P2),Value):-
     findall(1,consecutive_cubes(gamestate(Board,_,P1,P2),1,2),L1),
     findall(2,consecutive_cubes(gamestate(Board,_,P1,P2),2,2),L2),
     length(L1,C1),
     length(L2,C2),
-    Value is 20*(C1-C2).  
+    Value is (C1-C2).  
 
-value2(Gamestate, 200):-
-    consecutive_cubes(Gamestate,1,3),!.
+value(2,gamestate(_,_,P1,P2),Value):-
+    Value is (P1-P2).
 
-value2(gamestate(_,_,8,_),200).
+value(3,gamestate(Board,_,P1,P2),Value):-
+    findall(1,consecutive_cubes(gamestate(Board,_,P1,P2),1,2),L1),
+    findall(2,consecutive_cubes(gamestate(Board,_,P1,P2),2,2),L2),
+    length(L1,C1),
+    length(L2,C2),
+    Value is (C1-C2)+4*(P1-P2).
 
-value2(Gamestate, -200):-
-    consecutive_cubes(Gamestate,2,3),!.
-
-value2(gamestate(_,_,_,8),-200).
-
-value2(gamestate(_,_,P1,P2),Value):-
-    Value is 5*(P1-P2).
 
 
 %consecutive_cubes(+GameState, +Player, +N)
