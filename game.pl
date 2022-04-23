@@ -47,7 +47,7 @@ update_score(L1-L2,0,L1-L2).
 play_loop_tests(GameState,_, Winner):-
     game_over(GameState, Winner), !.
 
-play_loop_tests(gamestate(_,100,_,_),_, 0).
+play_loop_tests(gamestate(_,100,_,_),_, 0):-!.
 
 play_loop_tests(GameState, P1+L1-P2+L2, Winner):-
     choose_move(GameState,L1,I-J),

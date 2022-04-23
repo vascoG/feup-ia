@@ -1,9 +1,5 @@
 :- use_module(library(lists)).
 
-/**
-* Board is represented by a list of lists that can be queried using predicate board(+Board,+I-J,-Player), meaning in position (I,J) there is
-* a piece placed by the Player. If there is no cubes, Player returns 0.
-*/
 
 %initial_state(-GameState)
 initial_state(gamestate([[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],1,0,0)).
