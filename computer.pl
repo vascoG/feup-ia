@@ -15,27 +15,27 @@ choose_move(GameState, 2, Move):-
     alpha_beta_player(Player,P),
     alpha_beta(1,P,3, GameState, -300, 300, Move, _Value).    
 
-choose_move(GameState, 5, Move):-
+choose_move(GameState, 4, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
     alpha_beta(2,P,3, GameState, -300, 300, Move, _Value).
 
-choose_move(GameState, 3, Move):-
+choose_move(GameState, 6, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
     alpha_beta(0,P,2, GameState, -300, 300, Move, _Value).     
 
-choose_move(GameState, 6, Move):-
+choose_move(GameState, 7, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
     alpha_beta(0,P,3, GameState, -300, 300, Move, _Value).    
 
-choose_move(GameState, 7, Move):-
+choose_move(GameState, 5, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
     alpha_beta(3,P,3, GameState, -300, 300, Move, _Value).
 
-choose_move(GameState, 4, Move):-
+choose_move(GameState, 3, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
     alpha_beta(3,P,2, GameState, -300, 300, Move, _Value).
