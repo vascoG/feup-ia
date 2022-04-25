@@ -56,15 +56,17 @@ game_over(GameState,2):-
     consecutive_cubes(GameState, 2, 3),!.
 
 %alpha_beta(+ValueFun, +Player, +Depth, +Position, +Alpha, +Beta, -Move, -Value)
+alpha_beta(Level,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
+   value(Level,Position,V),
+   Value is V*Player.
+
 alpha_beta(Level,Player,_,Position,_Alpha,_Beta,Move,Value) :- 
     move(Position,Move,NewPosition),
     game_over(NewPosition,_),!,
     value(Level,Position,V),
     Value is V*Player.
 
-alpha_beta(Level,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :- 
-   value(Level,Position,V),
-   Value is V*Player.
+
 
 alpha_beta(ValueFun,Player,D,Position,Alpha,Beta,Move,Value) :- 
     D > 0,
