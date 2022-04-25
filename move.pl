@@ -8,7 +8,7 @@
 %move(+GameState, +Move, -NewGameState)
 move(gamestate(Board,Turn,P1,P2), MoveI-MoveJ, gamestate(NewBoard,NewTurn, NewP1,NewP2)):-
     current_player(gamestate(Board,Turn,P1,P2),Player),
-    between(0,5, MoveI), %5 ou 6?
+    between(0,5, MoveI),
     between(0,5, MoveJ),
     board(Board, MoveI-MoveJ, 0),  %Verificar se a célula está vazia.
     update_board(Board, MoveI,MoveJ, Player, NB),

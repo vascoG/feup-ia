@@ -71,7 +71,7 @@ menu(1):-
     options.
 
 menu(2):-
-    format('~nGekitai DESCRIPTION TBD',[]),
+    format('~nThe first player to either line up three of their color in a row at the end of their turn (after pushing)~nor have all eight of their markers on the board (also after pushing) wins. ',[]),
     press_enter_to_continue,
     menu.
 
@@ -95,16 +95,15 @@ play_options(2):-
     format('~n1 - Computer',[]),
     format('~nOption: ', []), read_digit_between(-1,2,Option),
     format('~nChoose the level of the computer',[]),
-    format('~nLevel (1-5): ', []),read_digit_between(0,6,Level),
+    format('~nLevel (1-7): ', []),read_digit_between(0,8,Level),
     play_human_computer(Option,Level).
 
 play_options(3):-
     format('Choose the level of Computer 1: ',[]),
-    format('~nLevel (1-5): ', []), read_digit_between(0,6,Level1),
+    format('~nLevel (1-7): ', []), read_digit_between(0,8,Level1),
     format('Choose the level of Computer 2: ',[]),
-    format('~nLevel (1-5): ', []), read_digit_between(0,6,Level2),
+    format('~nLevel (1-7): ', []), read_digit_between(0,8,Level2),
     play_game(c+Level1-c+Level2).
-
 
 
 %play_human_computer(+Option, +Level)
