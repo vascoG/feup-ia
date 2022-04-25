@@ -66,7 +66,7 @@ repel(Board, I-0, _-1, NewBoard, -1,0):-
     update_board(Board, I,0, 0, NewBoard),!.
 repel(Board, I-0, _-1, NewBoard, 0,-1):-
     board(Board,I-0,2),
-    update_board(Board, I,0, 0, NewBoard),!.    
+    update_board(Board, I,0, 0, NewBoard),!.
 repel(Board, I-5, _-4, NewBoard, -1,0):-
     board(Board,I-5,1),
     update_board(Board, I,5, 0, NewBoard),!.
@@ -75,7 +75,7 @@ repel(Board, I-5, _-4, NewBoard, 0,-1):-
     update_board(Board, I,5, 0, NewBoard),!.
 
 repel(Board, I-J, MoveI-MoveJ, NewBoard,0,0):-
-    I>=0, 
+    I>=0,
     J>=0,
     I=<5,
     J=<5,
@@ -111,7 +111,7 @@ select_move(GameState,c+Level, Move):-
 
 %current_player(+GameState, -Player)
 current_player(gamestate(_,Turn,_,_),Player):-
-    Turn1 is (Turn rem 2), 
+    Turn1 is (Turn rem 2),
     player_turn(Turn1, Player).
 
 %opponent(+Player,-Opponent)

@@ -3,7 +3,7 @@
 :- ensure_loaded(computer).
 
 %play
-play:- 
+play:-
     menu.
 
 %test(+Level1, +Level2)
@@ -122,7 +122,7 @@ play_game(P1+L1-P2+L2):-
 
 %play_loop(+GameState, +Players)
 play_loop(GameState,_):-
-    game_over(GameState, Winner), !, 
+    game_over(GameState, Winner), !,
     display_winner(Winner).
 
 play_loop(GameState, P1+L1-P2+L2):-

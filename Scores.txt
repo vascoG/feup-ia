@@ -6,6 +6,49 @@
 6: (C1-C2) + 4 * (P1-P2) [Depth 3] 
 7: (C1-C2) + 4 * (P1-P2) [Depth 2]  (alterar ordem depois) (faltar atualizar levels no play)
 
+
+36 rondas
+1 x 2 ( 2 - 34)
+
+2 x 1 ( 36 - 0)
+
+1 x 3 ( 0 - 36)
+
+3 x 1 ( 36 - 0 )
+
+2 x 3 ( 6 - 27)
+
+3 x 2 ( 25 -0 )
+
+4 x 2 (27 - 1)
+
+2 x 4 (4 - 27 )
+
+3 x 4 (16 - 7 )
+
+4 x 3 ( 4 - 15)
+
+4 x 5 ( 9 - 25)
+
+4 x 6 (3 - 26 )
+
+5 x 4 (31 - 4 )
+
+6 x 4 (26 - 0) 
+ 
+5 x 3 (8 - 6)
+
+5 x 2 ( 33 - 0)
+
+2 x 5 (2-34)
+
+6 x 2 (28-0)
+
+3 x 5 (6-14)
+
+6 x 3 (20-1)
+ 
+
 5 x 6 (10-11)
 6 x 5 (20-4)
 1 x 4 (0-36)
@@ -28,3 +71,9 @@
 7 x 6 (1-28)
 3 x 6 (3-18)
 2 x 6 (0-36)
+
+
+Melhor pior (esperado ou não) -> analisar resultados (apontar se o 1 for muito melhor que o segundo jogador (faz diferença começar primeiro?)
+
+Explicar que consideramos empates com limite de tempo
+
