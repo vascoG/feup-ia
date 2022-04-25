@@ -69,13 +69,13 @@ alpha_beta(Level,Player,0,Position,_Alpha,_Beta,_NoMove,Value) :-
 alpha_beta(ValueFun,Player,D,Position,Alpha,Beta,Move,Value) :- 
     D > 0,
     D1 is D-1,
-    findall(M,move(Position,M,_NewPosition),Moves), 
+    findall(Val+M,(move(Position,M,NewPosition), value(ValueFun, NewPosition,V),Val is V*Player*(-1)),Moves), 
     alpha_beta(ValueFun,Player, Moves, Position, D1, Alpha, Beta, nil, Value, Move).
 
 %alpha_beta(+ValueFun, +Player, +Moves, +Position, +Depth, +Alpha, +Beta, +CurrentBestMove, -BestValue, -BestMove)
 alpha_beta(_,_, [], _, _, Alpha, _, BestMove, Alpha, BestMove).
 
-alpha_beta(ValueFun,Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove):-
+alpha_beta(ValueFun,Player, [_+Move|Moves], Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove):-
     move(Position, Move, Position1),
     Opponent is -Player,
     OppAlpha is -Beta,
@@ -83,7 +83,7 @@ alpha_beta(ValueFun,Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestM
     alpha_beta(ValueFun,Opponent, D, Position1, OppAlpha, OppBeta, _OppMove, OppValue),
     Value is -OppValue,
     (
-        Value >= Beta -> BestValue = Value, BestMove = Move;
+        Value >= Beta -> BestValue = Value, BestMove = Move, !;
         Value > Alpha -> alpha_beta(ValueFun,Player, Moves, Position, D, Value, Beta, Move, BestValue, BestMove);
         alpha_beta(ValueFun,Player, Moves, Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove)
     ).
