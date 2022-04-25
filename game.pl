@@ -6,14 +6,14 @@
 play:- 
     menu.
 
+%test(+Level1, +Level2)
 test(Level1,Level2):-
-    play_tests(0,0-0,0-0, Level1,Level2,Score),
+    play_tests(0-0,0-0, Level1,Level2,Score),
     format('~nScore: ', []),
     write(Score).
 
 %play_tests
-play_tests(Game,I-J,L1-L2,Level1,Level2, Score):-
-    Game < 36,
+play_tests(I-J,L1-L2,Level1,Level2, Score):-
     write(I-J),
     write(' : '),
     initial_state(GameState),
@@ -22,12 +22,12 @@ play_tests(Game,I-J,L1-L2,Level1,Level2, Score):-
     write(Winner),
     format('~n', []),
     update_score(L1-L2,Winner,LL1-LL2),
-    Game1 is Game+1,
     next_move(I-J,II-JJ),
-    play_tests(Game1,II-JJ,LL1-LL2, Level1,Level2,Score).
+    play_tests(II-JJ,LL1-LL2, Level1,Level2,Score).
 
-play_tests(36,_,L1-L2, _,_,L1-L2).
+play_tests(0-6,L1-L2, _,_,L1-L2).
 
+%next_move(+Move, -NextMove)
 next_move(I-J,II-J):-
     I < 5, !,
     II is I+1.
@@ -35,6 +35,7 @@ next_move(I-J,II-J):-
 next_move(5-J,0-JJ):-
     JJ is J+1,!.
 
+%update_score(+Score, +Winner, -NewScore)
 update_score(L1-L2,1,LL1-L2):-
     LL1 is L1+1.
 

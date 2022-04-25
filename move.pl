@@ -48,9 +48,7 @@ move_adjacents(Board, 2, I-J, P1, P2, NewBoard, NewP1, NewP2):-
     NewP1 is P1+P11+P12+P13+P14+P15+P16+P17+P18,
     NewP2 is P2+P21+P22+P23+P24+P25+P26+P27+P28+1.
 
-
-
-
+%repel(+Board, +Adjacent, +Move, -NewBoard, -DiffP1, -DiffP2)
 repel(Board, 0-J, 1-_, NewBoard, -1,0):-
     board(Board,0-J,1),
     update_board(Board, 0,J, 0, NewBoard),!.
@@ -92,10 +90,6 @@ repel(Board, I-J, MoveI-MoveJ, NewBoard,0,0):-
 
 
 repel(Board,_,_,Board,0,0).
-
-
-%ter um default case no fim para o caso de nao entrar em funçoes anteriores de repel em que nao muda a board
-
 
 %valid_moves(+GameState, -ListOfMoves)
 valid_moves(GameState,ListOfMoves):-

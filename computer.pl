@@ -15,7 +15,6 @@ choose_move(GameState, 2, Move):-
     alpha_beta_player(Player,P),
     alpha_beta(1,P,3, GameState, -300, 300, Move, _Value).    
 
-
 choose_move(GameState, 3, Move):-
     current_player(GameState,Player),
     alpha_beta_player(Player,P),
@@ -36,10 +35,16 @@ choose_move(GameState, 6, Move):-
     alpha_beta_player(Player,P),
     alpha_beta(3,P,3, GameState, -300, 300, Move, _Value).
 
+choose_move(GameState, 7, Move):-
+    current_player(GameState,Player),
+    alpha_beta_player(Player,P),
+    alpha_beta(3,P,2, GameState, -300, 300, Move, _Value).
 
+%alpha_beta_player(+Player,-AlphaPlayer)
 alpha_beta_player(1,1).
 alpha_beta_player(2,-1).
 
+%game_over(+GameState, -Winner)
 game_over(GameState,1):-
     consecutive_cubes(GameState, 1, 3),!.
 
@@ -50,7 +55,7 @@ game_over(gamestate(_,_,_,8),2):- !.
 game_over(GameState,2):-
     consecutive_cubes(GameState, 2, 3),!.
 
-
+%alpha_beta(+ValueFun, +Player, +Depth, +Position, +Alpha, +Beta, -Move, -Value)
 alpha_beta(Level,Player,_,Position,_Alpha,_Beta,_NoMove,Value) :- 
     game_over(Position,_),!,
     value(Level,Position,V),
@@ -66,6 +71,7 @@ alpha_beta(ValueFun,Player,D,Position,Alpha,Beta,Move,Value) :-
     findall(M,move(Position,M,_NewPosition),Moves), 
     alpha_beta(ValueFun,Player, Moves, Position, D1, Alpha, Beta, nil, Value, Move).
 
+%alpha_beta(+ValueFun, +Player, +Moves, +Position, +Depth, +Alpha, +Beta, +CurrentBestMove, -BestValue, -BestMove)
 alpha_beta(_,_, [], _, _, Alpha, _, BestMove, Alpha, BestMove).
 
 alpha_beta(ValueFun,Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove):-
@@ -81,6 +87,7 @@ alpha_beta(ValueFun,Player, [Move|Moves], Position, D, Alpha, Beta, CurrentBestM
         alpha_beta(ValueFun,Player, Moves, Position, D, Alpha, Beta, CurrentBestMove, BestValue, BestMove)
     ).
 
+%value(+ValueFun, +GameState, -Value)
 value(_,Gamestate, 200):-
     consecutive_cubes(Gamestate, 1, 3),!.
 
@@ -115,8 +122,6 @@ value(3,gamestate(Board,T,P1,P2),Value):-
     length(L2,C2),
     Value is (C1-C2)+4*(P1-P2).
 
-
-
 %consecutive_cubes(+GameState, +Player, +N)
 consecutive_cubes(gamestate(Board,_,_,_),Player,3):-
     append(_, [L|_], Board),
@@ -140,7 +145,6 @@ consecutive_cubes(gamestate(Board,_,_,_),Player,3):-
     length(Before2, M2),
     length(Before3, M3),
     M2 is M1-1, M3 is M2-1.
-
 
 consecutive_cubes(gamestate(Board,_,_,_),Player,3):-
     append(_, [C1,C2,C3|_], Board),
